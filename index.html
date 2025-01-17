@@ -57,12 +57,22 @@
                             });
                         },
                         onEachFeature: function (feature, layer) {
-                            // Add popups or other interactions if needed
-                            if (feature.properties && feature.properties.name) {
-                                layer.bindPopup('<b>' + feature.properties.name + '</b><br>Service Level: ' + feature.properties.service_level_metric);
+                        // Add a popup showing information from the feature properties
+                        if (feature.properties) {
+                            let popupContent = `<b>Point Information</b><br>`;
+                            if (feature.properties.name) {
+                                popupContent += `<b>Name:</b> ${feature.properties.name}<br>`;
                             }
+                            if (feature.properties.service_level_metric) {
+                                popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`;
+                            }
+                            if (feature.properties.time) {
+                                popupContent += `<b>Time:</b> ${feature.properties.time}<br>`;
+                            }
+                            layer.bindPopup(popupContent);
                         }
-                    }).addTo(map);
+                    }
+                }).addTo(map);
                 })
                 .catch(err => {
                     console.error('Error loading GeoJSON file:', err);
