@@ -18,22 +18,23 @@
     <style>
         #map {
         height: 100vh;
-        margin-top: 40px; /* Add some space to the top so the slider doesn't overlap */
+        position: relative; /* Required to position the slider inside the map */
     }
 
     #slider-container {
-        position: fixed;
-        top: 20px; /* Adjust this value to control the distance from the top */
+        position: absolute;
+        bottom: 20px; /* Adjust this value to control the distance from the bottom */
         left: 50%;
         transform: translateX(-50%); /* Centers the slider horizontally */
-        z-index: 1000; /* Ensures it's above other content */
+        z-index: 1000; /* Ensures it's above the map */
         background-color: white; /* Optional: Adds a background to make the slider more visible */
         padding: 10px; /* Optional: Adds padding around the slider */
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow for better visibility */
+        width: 80%; /* Makes the slider wider */
     }
 
     #hour-slider {
-        width: 300px; /* Controls the width of the slider */
+        width: 100%; /* Makes the slider take up the full width of the container */
     }
 
     #hour-display {
