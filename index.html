@@ -113,9 +113,15 @@
             const filteredData = {
                 type: "FeatureCollection",
                 features: geojsonData.features.filter(function (feature) {
-                    // Extract hour from 'time' field (assuming time is in 'MM/DD/YYYY HH:mm' format)
+                    // Extract hour from 'time' field (assuming time is in 'DD/MM/YYYY HH:mm' format)
                     const timeString = feature.properties.time;
-                    const dateObj = new Date(timeString); // Parse 'MM/DD/YYYY HH:mm' format
+                    const dateParts = timeString.split(' '); // Split into DD/MM/YYYY and HH:mm
+                    const [day, month, year] = dateParts[0].split('/'); // Extract day, month, year
+                    const [hourPart, minutePart] = dateParts[1].split(':'); // Extract hour and minute
+                    
+                    // Create a Date object using the parsed components
+                    const dateObj = new Date(`${month}/${day}/${year} ${hourPart}:${minutePart}`);
+
                     const eventHour = dateObj.getHours();
                     return eventHour === hour;
                 })
