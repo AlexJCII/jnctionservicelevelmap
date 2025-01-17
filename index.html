@@ -106,18 +106,17 @@
         
         // Function to determine color based on service_level_metric
         function getColor(serviceLevel) {
-    // Color scale array provided
+    // Reversed color scale array provided (inverted)
     const colorScale = [
-        "#2e2b28", "#3b3734", "#474440", "#54504c", "#6b506b", 
-        "#ab3da9", "#de25da", "#eb44e8", "#ff80ff"
+        "#991f17", "#b04238", "#c86558", "#df8879", "#a4a2a8", 
+        "#b3bfd1", "#bfcbdb", "#cbd6e4", "#d7e1ee"
     ];
 
     // Calculate the index of the color based on the service level (0-100)
     const index = Math.min(Math.max(Math.floor(serviceLevel / 10), 0), colorScale.length - 1);
-    
+
     // Return the color from the color scale based on the calculated index
     return colorScale[index];
-}
 
         
         
