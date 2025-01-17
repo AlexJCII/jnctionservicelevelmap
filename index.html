@@ -14,8 +14,31 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
     <style>
-        #map { height: 100vh; }
+        #map {
+        height: 100vh;
+        margin-top: 40px; /* Add some space to the top so the slider doesn't overlap */
+    }
+
+    #slider-container {
+        position: fixed;
+        top: 20px; /* Adjust this value to control the distance from the top */
+        left: 50%;
+        transform: translateX(-50%); /* Centers the slider horizontally */
+        z-index: 1000; /* Ensures it's above other content */
+        background-color: white; /* Optional: Adds a background to make the slider more visible */
+        padding: 10px; /* Optional: Adds padding around the slider */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow for better visibility */
+    }
+
+    #hour-slider {
+        width: 300px; /* Controls the width of the slider */
+    }
+
+    #hour-display {
+        margin-left: 10px;
+    }
     </style>
 </head>
 <body>
