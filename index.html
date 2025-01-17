@@ -91,9 +91,6 @@
                                 if (feature.properties.time) {
                                     popupContent += `<b>Time:</b> ${feature.properties.time}<br>`;
                                 }
-                                if (feature.properties.event_hour) {
-                                    popupContent += `<b>Event Hour:</b> ${feature.properties.event_hour}<br>`;
-                                }
                                 layer.bindPopup(popupContent);
                             }
                         }
@@ -107,16 +104,20 @@
                 });
         }
 
-        // Function to filter GeoJSON points based on selected hour
+        // Function to filter GeoJSON points based on selected hour from the 'time' field
         function filterPointsByHour(hour) {
             // Clear the current layer
             map.removeLayer(geojsonLayer);
 
-            // Filter the points based on the event_hour field
+            // Filter the points based on the 'time' field
             const filteredData = {
                 type: "FeatureCollection",
                 features: geojsonData.features.filter(function (feature) {
-                    return feature.properties.event_hour == hour;
+                    // Extract hour from 'time' field (assuming time is in 'MM/DD/YYYY HH:mm' format)
+                    const timeString = feature.properties.time;
+                    const dateObj = new Date(timeString); // Parse 'MM/DD/YYYY HH:mm' format
+                    const eventHour = dateObj.getHours();
+                    return eventHour === hour;
                 })
             };
 
