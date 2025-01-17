@@ -21,7 +21,26 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        
+        // // Function to fetch and decompress the GeoJSON
+        // function loadGeoJSON(url) {
+        //     // Fetch the gzipped GeoJSON file
+        //     fetch(url)
+        //         .then(response => response.arrayBuffer())
+        //         .then(data => {
+        //             // Decompress the gzipped data using pako
+        //             const decompressedData = pako.ungzip(new Uint8Array(data), { to: 'string' });
+
+        //             // Parse the decompressed GeoJSON string into an object
+        //             const geojsonData = JSON.parse(decompressedData);
+
+        //             // Add the decompressed GeoJSON data to the map
+        //             L.geoJSON(geojsonData).addTo(map);
+        //         })
+        //         .catch(err => {
+        //             console.error('Error loading GeoJSON file:', err);
+        //         });
+        // }
+
         // Function to fetch and decompress the GeoJSON
         function loadGeoJSON(url) {
             // Fetch the gzipped GeoJSON file
@@ -34,16 +53,40 @@
                     // Parse the decompressed GeoJSON string into an object
                     const geojsonData = JSON.parse(decompressedData);
 
-                    // Add the decompressed GeoJSON data to the map
-                    L.geoJSON(geojsonData).addTo(map);
+                    // Add the decompressed GeoJSON data to the map with custom markers
+                    L.geoJSON(geojsonData, {
+                        pointToLayer: function (feature, latlng) {
+                            // Get the value of the 'service_level_metric' from the feature
+                            const serviceLevel = feature.properties.service_level_metric;
+
+                            // Define a color scale for the markers
+                            const color = getColor(serviceLevel);
+
+                            // Create a circle marker with custom size and color based on service_level_metric
+                            return L.circleMarker(latlng, {
+                                radius: 8,  // Smaller icon size
+                                fillColor: color,  // Dynamic color based on service_level_metric
+                                color: color,
+                                weight: 1,
+                                opacity: 1,
+                                fillOpacity: 0.8
+                            });
+                        },
+                        onEachFeature: function (feature, layer) {
+                            // Add popups or other interactions if needed
+                            if (feature.properties && feature.properties.name) {
+                                layer.bindPopup('<b>' + feature.properties.name + '</b><br>Service Level: ' + feature.properties.service_level_metric);
+                            }
+                        }
+                    }).addTo(map);
                 })
                 .catch(err => {
                     console.error('Error loading GeoJSON file:', err);
                 });
         }
 
+        
         // Load your GeoJSON file
-        //loadGeoJSON('https://github.com/AlexJCII/jnctionservicelevelmap/raw/refs/heads/main/slm_points_dummy_sample.geojson.gz'); // Update with the correct path to your gzipped GeoJSON
         loadGeoJSON('https://raw.githubusercontent.com/AlexJCII/jnctionservicelevelmap/main/slm_points_dummy_sample.geojson.gz'); // Update with the correct path to your gzipped GeoJSON
         
 
