@@ -106,29 +106,18 @@
         
         // Function to determine color based on service_level_metric
         function getColor(serviceLevel) {
-        // Define color ranges for different service level metrics with adjustments
-        if (serviceLevel >= 90) {
-            return 'green'; // Green for service level >= 90
-        } else if (serviceLevel >= 80) {
-            return '#66CC66'; // Light Green for service level 80-89
-        } else if (serviceLevel >= 70) {
-            return '#66FF66'; // Light Green for service level 70-79
-        } else if (serviceLevel >= 60) {
-            return '#FF9900'; // Amber for service level 60-69
-        } else if (serviceLevel >= 50) {
-            return '#FFCC00'; // Darker Amber for service level 50-59
-        } else if (serviceLevel >= 40) {
-            return '#FF3300'; // Dark Orange for service level 40-49
-        } else if (serviceLevel >= 30) {
-            return '#FF0000'; // Red for service level 30-39
-        } else if (serviceLevel >= 20) {
-            return '#CC0000'; // Dark Red for service level 20-29
-        } else if (serviceLevel >= 10) {
-            return '#990000'; // Very Dark Red for service level 10-19
-        } else {
-            return '#660000'; // Extremely Dark Red for service level < 10
-        }
-    }
+    // Color scale array provided
+    const colorScale = [
+        "#2e2b28", "#3b3734", "#474440", "#54504c", "#6b506b", 
+        "#ab3da9", "#de25da", "#eb44e8", "#ff80ff"
+    ];
+
+    // Calculate the index of the color based on the service level (0-100)
+    const index = Math.min(Math.max(Math.floor(serviceLevel / 10), 0), colorScale.length - 1);
+    
+    // Return the color from the color scale based on the calculated index
+    return colorScale[index];
+}
 
         
         
