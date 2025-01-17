@@ -10,12 +10,22 @@
     <script src="https://unpkg.com/shapefile@0.6"></script>
 <!--     <script src="https://unpkg.com/shapefile/shapefile.js"></script>
     <script src="https://unpkg.com/leaflet.shapefile"></script> -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <style>
         #map { height: 100vh; }
     </style>
 </head>
 <body>
+    <div id="slider-container">
+        <label for="hour-slider">Select Hour:</label>
+        <div id="hour-slider"></div>
+        <span id="hour-display">0</span>
+    </div>
+
     <div id="map"></div>
+    
     <script>
         // Initialise map
         var map = L.map('map').setView([51.505, -0.09], 13);
@@ -25,6 +35,7 @@
             opacity: 0.6  // Adjust opacity (0 = fully transparent, 1 = fully opaque)
         }).addTo(map);
 
+        
         
         // COMMENTED OUT UNTIL CAN HOST THE LARGE SHP FILE ON OUR SERVERS
         // // Load the shapefile of railway lines
@@ -45,32 +56,23 @@
         
         // Function to fetch and decompress the GeoJSON
         function loadGeoJSON(url) {
-            // Fetch the gzipped GeoJSON file
             fetch(url)
                 .then(response => response.arrayBuffer())
                 .then(data => {
                     // Decompress the gzipped data using pako
                     const decompressedData = pako.ungzip(new Uint8Array(data), { to: 'string' });
 
-                    // Log decompressed data
-                    console.log('Decompressed GeoJSON:', decompressedData);  
-                    
                     // Parse the decompressed GeoJSON string into an object
-                    const geojsonData = JSON.parse(decompressedData);
+                    geojsonData = JSON.parse(decompressedData);
 
-                    // Add the decompressed GeoJSON data to the map with custom markers
-                    L.geoJSON(geojsonData, {
+                    // Create a GeoJSON layer
+                    geojsonLayer = L.geoJSON(geojsonData, {
                         pointToLayer: function (feature, latlng) {
-                            // Get the value of the 'service_level_metric' from the feature
                             const serviceLevel = feature.properties.service_level_metric;
-
-                            // Define a color scale for the markers
                             const color = getColor(serviceLevel);
-
-                            // Create a circle marker with custom size and color based on service_level_metric
                             return L.circleMarker(latlng, {
-                                radius: 4,  // Smaller icon size
-                                fillColor: color,  // Dynamic color based on service_level_metric
+                                radius: 4,
+                                fillColor: color,
                                 color: color,
                                 weight: 1,
                                 opacity: 1,
@@ -78,28 +80,74 @@
                             });
                         },
                         onEachFeature: function (feature, layer) {
-                        // Add a popup showing information from the feature properties
-                        if (feature.properties) {
-                            let popupContent = `<b>Info</b><br>`;
-                            if (feature.properties.geo_code) {
-                                popupContent += `<b>Location Code:</b> ${feature.properties.geo_code}<br>`;
+                            if (feature.properties) {
+                                let popupContent = `<b>Info</b><br>`;
+                                if (feature.properties.geo_code) {
+                                    popupContent += `<b>Location Code:</b> ${feature.properties.geo_code}<br>`;
+                                }
+                                if (feature.properties.service_level_metric) {
+                                    popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`;
+                                }
+                                if (feature.properties.time) {
+                                    popupContent += `<b>Time:</b> ${feature.properties.time}<br>`;
+                                }
+                                if (feature.properties.event_hour) {
+                                    popupContent += `<b>Event Hour:</b> ${feature.properties.event_hour}<br>`;
+                                }
+                                layer.bindPopup(popupContent);
                             }
-                            if (feature.properties.service_level_metric) {
-                                popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`;
-                            }
-                            if (feature.properties.time) {
-                                popupContent += `<b>Time:</b> ${feature.properties.time}<br>`;
-                            }
-                            layer.bindPopup(popupContent);
                         }
-                    }
-                }).addTo(map);
+                    }).addTo(map);
+
+                    // Trigger filtering based on initial slider value
+                    filterPointsByHour($('#hour-slider').slider("value"));
                 })
                 .catch(err => {
                     console.error('Error loading GeoJSON file:', err);
                 });
         }
 
+        // Function to filter GeoJSON points based on selected hour
+        function filterPointsByHour(hour) {
+            // Clear the current layer
+            map.removeLayer(geojsonLayer);
+
+            // Filter the points based on the event_hour field
+            const filteredData = {
+                type: "FeatureCollection",
+                features: geojsonData.features.filter(function (feature) {
+                    return feature.properties.event_hour == hour;
+                })
+            };
+
+            // Add the filtered data back to the map
+            geojsonLayer = L.geoJSON(filteredData, {
+                pointToLayer: function (feature, latlng) {
+                    const serviceLevel = feature.properties.service_level_metric;
+                    const color = getColor(serviceLevel);
+                    return L.circleMarker(latlng, {
+                        radius: 4,
+                        fillColor: color,
+                        color: color,
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    });
+                }
+            }).addTo(map);
+        }
+
+        // Initialize the slider
+        $("#hour-slider").slider({
+            min: 0,
+            max: 23,
+            step: 1,
+            value: 0,
+            slide: function (event, ui) {
+                $("#hour-display").text(ui.value);
+                filterPointsByHour(ui.value); // Filter points based on selected hour
+            }
+        });
         
         // Load your GeoJSON file
         loadGeoJSON('https://raw.githubusercontent.com/AlexJCII/jnctionservicelevelmap/main/slm_points_dummy_sample.geojson.gz'); // Update with the correct path to your gzipped GeoJSON
