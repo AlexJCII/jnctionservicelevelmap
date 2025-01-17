@@ -50,6 +50,9 @@
                     // Decompress the gzipped data using pako
                     const decompressedData = pako.ungzip(new Uint8Array(data), { to: 'string' });
 
+                    // Log decompressed data
+                    console.log('Decompressed GeoJSON:', decompressedData);  
+                    
                     // Parse the decompressed GeoJSON string into an object
                     const geojsonData = JSON.parse(decompressedData);
 
