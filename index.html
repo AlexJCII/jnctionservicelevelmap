@@ -106,15 +106,29 @@
         
         // Function to determine color based on service_level_metric
         function getColor(serviceLevel) {
-            // Define color ranges for different service level metrics
-            if (serviceLevel >= 90) {
-                return 'green'; // Green for service level >= 90
-            } else if (serviceLevel >= 70) {
-                return 'orange'; // Orange for service level between 70 and 89
-            } else {
-                return 'red'; // Red for service level < 70
-            }
+        // Define color ranges for different service level metrics using a 10-step scale
+        if (serviceLevel >= 90) {
+            return 'green'; // Green for service level >= 90
+        } else if (serviceLevel >= 80) {
+            return '#66CC66'; // Light Green for service level 80-89
+        } else if (serviceLevel >= 70) {
+            return '#99CC33'; // Yellow-Green for service level 70-79
+        } else if (serviceLevel >= 60) {
+            return '#CCFF33'; // Yellow for service level 60-69
+        } else if (serviceLevel >= 50) {
+            return '#FFFF00'; // Light Yellow for service level 50-59
+        } else if (serviceLevel >= 40) {
+            return '#FFCC00'; // Amber for service level 40-49
+        } else if (serviceLevel >= 30) {
+            return '#FF9900'; // Orange-amber for service level 30-39
+        } else if (serviceLevel >= 20) {
+            return '#FF6600'; // Orange for service level 20-29
+        } else if (serviceLevel >= 10) {
+            return '#FF3300'; // Dark Orange for service level 10-19
+        } else {
+            return '#FF0000'; // Red for service level < 10
         }
+    }
 
         
         
