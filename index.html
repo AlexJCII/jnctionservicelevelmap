@@ -98,7 +98,7 @@
         // Load the shapefile of railway lines
         var railwayLayer;
         function loadRailwayShapefile() {
-            var shapefileUrl = 'https://github.com/AlexJCII/jnctionservicelevelmap/raw/refs/heads/main/NWR_TrackModel20241119.zip'; // URL to your shapefile.zip
+            var shapefileUrl = 'https://github.com/AlexJCII/jnctionservicelevelmap/raw/refs/heads/main/NWR_TrackModel20241119_C.zip'; // URL to your shapefile.zip
             railwayLayer = new L.Shapefile(shapefileUrl, {
                 onEachFeature: function (feature, layer) {
                     layer.bindPopup('Railway Line: ' + feature.properties.name);
