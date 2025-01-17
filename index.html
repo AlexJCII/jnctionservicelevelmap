@@ -41,6 +41,36 @@
 
         // Load your GeoJSON file
         loadGeoJSON('https://github.com/AlexJCII/jnctionservicelevelmap/blob/main/slm_points_dummy.geojson.gz'); // Update with the correct path to your gzipped GeoJSON
+       <div id="map"></div>
+    <script>
+        // Initialise map
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        // Function to fetch and decompress the GeoJSON
+        function loadGeoJSON(url) {
+            // Fetch the gzipped GeoJSON file
+            fetch(url)
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                    // Decompress the gzipped data using pako
+                    const decompressedData = pako.ungzip(new Uint8Array(data), { to: 'string' });
+
+                    // Parse the decompressed GeoJSON string into an object
+                    const geojsonData = JSON.parse(decompressedData);
+
+                    // Add the decompressed GeoJSON data to the map
+                    L.geoJSON(geojsonData).addTo(map);
+                })
+                .catch(err => {
+                    console.error('Error loading GeoJSON file:', err);
+                });
+        }
+
+        // Load your GeoJSON file
+        loadGeoJSON('https://github.com/AlexJCII/jnctionservicelevelmap/raw/refs/heads/main/slm_points_dummy.geojson.gz'); // Update with the correct path to your gzipped GeoJSON
        
     </script>
 </body>
