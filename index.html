@@ -50,40 +50,7 @@
         <div id="hour-slider"></div>
         <span id="hour-display">0</span>
     </div>
-
-<!-- onEachFeature: function (feature, layer) {
-                            if (feature.properties) {
-                                let popupContent = `<b>Info</b><br>`;
-                                if (feature.properties.geo_code) {
-                                    popupContent += `<b>Location Code:</b> ${feature.properties.geo_code}<br>`;
-                                }
-                                if (feature.properties.service_level_metric) {
-                                    popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`;
-                                }
-                                if (feature.properties.time) {
-                                    popupContent += `<b>Time:</b> ${feature.properties.time}<br>`;
-                                }
-                                layer.bindPopup(popupContent);
-                            }
-                        }     -->
-
-<!-- onEachFeature: function (feature, layer) {
-    if (feature.properties) {
-        let popupContent = `<b>Info</b><br>`; // Corrected with backticks for template literals
-        if (feature.properties.geo_code) {
-            popupContent += `<b>Location Code:</b> ${feature.properties.geo_code}<br>`; // Corrected with backticks
-        }
-        if (feature.properties.service_level_metric) {
-            popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`; // Corrected with backticks
-        }
-        if (feature.properties.time) {
-            popupContent += `<b>Time:</b> ${feature.properties.time}<br>`; // Corrected with backticks
-        }
-        layer.bindPopup(popupContent);
-    }
-} -->
-
-    
+  
     <script>
         // Initialise map
         var map = L.map('map').setView([51.505, -0.09], 13);
@@ -137,23 +104,6 @@
                                 fillOpacity: 0.8
                             });
                         }
-                        // COMMENTED OUT ORIGINAL oneachfeature section to move to global definition
-                        // ,
-                        // onEachFeature: function (feature, layer) {
-                        //     if (feature.properties) {
-                        //         let popupContent = `<b>Info</b><br>`;
-                        //         if (feature.properties.geo_code) {
-                        //             popupContent += `<b>Location Code:</b> ${feature.properties.geo_code}<br>`;
-                        //         }
-                        //         if (feature.properties.service_level_metric) {
-                        //             popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`;
-                        //         }
-                        //         if (feature.properties.time) {
-                        //             popupContent += `<b>Time:</b> ${feature.properties.time}<br>`;
-                        //         }
-                        //         layer.bindPopup(popupContent);
-                        //     }
-                        // }
                     }).addTo(map);
 
                     // Trigger filtering based on initial slider value
