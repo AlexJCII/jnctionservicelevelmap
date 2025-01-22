@@ -51,7 +51,7 @@
         <span id="hour-display">0</span>
     </div>
 
-onEachFeature: function (feature, layer) {
+<!-- onEachFeature: function (feature, layer) {
                             if (feature.properties) {
                                 let popupContent = `<b>Info</b><br>`;
                                 if (feature.properties.geo_code) {
@@ -65,7 +65,7 @@ onEachFeature: function (feature, layer) {
                                 }
                                 layer.bindPopup(popupContent);
                             }
-                        }    
+                        }     -->
 
 onEachFeature: function (feature, layer) {
     if (feature.properties) {
