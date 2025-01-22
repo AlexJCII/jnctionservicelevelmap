@@ -163,7 +163,18 @@
                                 if (feature.properties.time) {
                                     popupContent += `<b>Time:</b> ${feature.properties.time}<br>`;
                                 }
-                                layer.bindPopup(popupContent);
+                                // layer.bindPopup(popupContent);
+
+                                // Add hover effect: show popup on hover
+                                layer.on('mouseover', function() {
+                                    layer.bindPopup(popupContent).openPopup();
+                                });
+                        
+                                // Add hover effect: close popup when mouse leaves
+                                layer.on('mouseout', function() {
+                                    layer.closePopup();
+                                });
+                                
                             }
                         }
             }).addTo(map);
