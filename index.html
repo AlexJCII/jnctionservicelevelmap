@@ -66,6 +66,23 @@ onEachFeature: function (feature, layer) {
                                 layer.bindPopup(popupContent);
                             }
                         }    
+
+onEachFeature: function (feature, layer) {
+    if (feature.properties) {
+        let popupContent = `<b>Info</b><br>`; // Corrected with backticks for template literals
+        if (feature.properties.geo_code) {
+            popupContent += `<b>Location Code:</b> ${feature.properties.geo_code}<br>`; // Corrected with backticks
+        }
+        if (feature.properties.service_level_metric) {
+            popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`; // Corrected with backticks
+        }
+        if (feature.properties.time) {
+            popupContent += `<b>Time:</b> ${feature.properties.time}<br>`; // Corrected with backticks
+        }
+        layer.bindPopup(popupContent);
+    }
+}
+
     
     <script>
         // Initialise map
