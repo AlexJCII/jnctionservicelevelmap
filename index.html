@@ -154,8 +154,8 @@
                         onEachFeature: function (feature, layer) {
                             if (feature.properties) {
                                 let popupContent = `<b>Info</b><br>`;
-                                if (feature.properties.planned_location_stanox) {
-                                    popupContent += `<b>Location Code:</b> ${feature.properties.planned_location_stanox}<br>`;
+                                if (feature.geometry.geo_code) {
+                                    popupContent += `<b>Location Code:</b> ${feature.geometry.geo_code}<br>`;
                                 }
                                 if (feature.properties.service_level_metric) {
                                     popupContent += `<b>Service Level:</b> ${feature.properties.service_level_metric}<br>`;
